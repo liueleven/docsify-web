@@ -1,11 +1,10 @@
-# Nginx初识
+# 初识Nginx
+> 写于2018-07-22
 
-更新于2018-07-22
+---
+重要的事情先声明：如果你要配置或修改nginx的相关文件，请一定！一定！一定！先**备份**该文件，不然鬼知道会出现什么情况...
 
-
-> 重要的事情先声明：如果你要配置或修改nginx的相关配置文件，请一定！一定！一定！先**备份**该文件，不然鬼知道会出现什么情况...
-
-
+--- 
 ### 前言
 先谈谈我对nginx的理解，首先它是一个很优秀的中间件，很多人都这样说。但是到底优秀在哪里，为什么这么会这么优秀，我觉得带着这2个问题去学习，效果会更好！那为什么这么优秀？是因为是它效率高，为什么效率高？说大了就是整个架构，往小的说就是对请求处理的更快，这一系列的为什么一直问下去，第一个大问题就应该可以解决了。第二个优秀的原因是因为它是由很多的模块组成的，也就是说你想要什么功能就可对应的配置相应的模块。
 ### nginx是一个优秀的中间件
@@ -30,7 +29,7 @@ IO多路复用（这里的复用指的是线程）,可以在一个线程内并�
 - 找到download，选择Stable version（稳定版）
 - 打开文件 vi /etc/yum.repos.d/nginx.repo，复制下面的进行替换
 
-    OS：linux的系统，比如centos，red hat，OSRELEASE: 改系统的版本，比如 7,4
+    OS：linux的系统，比如centos，redhat; OSRELEASE: 该系统的版本，比如 7.4，4.1.8-11；这里的baseurl是个下载的url，不能有空格
     ```
     [nginx]
     name=nginx repo
@@ -199,37 +198,9 @@ http {
         #   server_name _ "";  
         #   return 444;  
     #}  
-      
-    #ceshi by dongange 2016-01-07  
-  
-    #Nginx状态监测模块配置  
-    req_status_zone server "$server_name,$server_addr:$server_port" 10M;  
-    req_status server;  
-    server {  
-        listen 127.0.0.1:80;  
-        server_name 127.0.0.1;  
-        access_log /opt/log/nginx/nginx_status/status_access.log main;  
-            location /status {  
-                req_status_show;  
-                access_log /opt/log/nginx/nginx_status/status_access.log main;  
-                allow 127.0.0.1;  
-                deny all;  
-                }  
-            location /stub_status {  
-                stub_status on;  
-                access_log /opt/log/nginx/nginx_status_stub/status_stub_access.log main;  
-                allow 127.0.0.1;  
-                deny all;  
-            }  
-            location /check_status {  
-                check_status;  
-                access_log /opt/log/nginx/nginx_status_check/status_access_check.log main;  
-                allow 127.0.0.1;  
-                deny all;  
-            }  
-    }  
 }  
 ```
+
 ### nginx中location配置
 > 这个配置是最基础的了，用来配置请求的url处理，可以配置多个location规则，默认是从上到下开始进行匹配的，匹配成功就直接进行操作
 
@@ -243,57 +214,14 @@ http {
  - ^~ 开头表示uri以某个常规字符串开头
  - / 通用匹配，任何请求都会匹配到
 ##### 这篇文章对location配置介绍的比较全[建议阅读](https://www.cnblogs.com/sign-ptk/p/6723048.html)
+
 ### nginx进程模型
 - nginx默认是以多进程的方式进行工作的，同时也是支持多线程的
     > nginx在启动后会有一个master进程，和多个worker进程，master主要是管理worker的，worker用来处理请求，worker的数量是可以设置的。一般设置成和cpu核数一致  （很重要的原因是如果进程数大于cpu核数的话，进程会抢占cpu资源，从而带来了不必要的上下文切换）。
 
 ### nginx模块
 nginx -V 查看信息
-```
---prefix=/etc/nginx 
---sbin-path=/usr/sbin/nginx
---modules-path=/usr/lib64/nginx/modules
---conf-path=/etc/nginx/nginx.conf
---error-log-path=/var/log/nginx/error.log
---http-log-path=/var/log/nginx/access.log 
---pid-path=/var/run/nginx.pid 
---lock-path=/var/run/nginx.lock
---http-client-body-temp-path=/var/cache/nginx/client_temp
---http-proxy-temp-path=/var/cache/nginx/proxy_temp
---http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp
---http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp
---http-scgi-temp-path=/var/cache/nginx/scgi_temp 
---user=nginx 
---group=nginx 
---with-compat 
---with-file-aio 
---with-threads 
---with-http_addition_module 
---with-http_auth_request_module 
---with-http_dav_module 
---with-http_flv_module 
---with-http_gunzip_module 
---with-http_gzip_static_module 
---with-http_mp4_module 
---with-http_random_index_module 
---with-http_realip_module 
---with-http_secure_link_module 
---with-http_slice_module 
---with-http_ssl_module 
---with-http_stub_status_module 
---with-http_sub_module          //nginx当前连接的状态信息
---with-http_v2_module 
---with-mail 
---with-mail_ssl_module 
---with-stream 
---with-stream_realip_module 
---with-stream_ssl_module 
---with-stream_ssl_preread_module 
---with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong 
---param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic -fPIC' 
---with-ld-opt='-Wl,-z,relro -Wl,-z,now -pie'
 
-```
 每个模块都有相关的配置语法和说明，具体可以百度，一般有这三个参数
 ```
 Syntax:  random_index on | off;   //配置语法 
@@ -308,8 +236,6 @@ Context: location   //上下文（我理解的是作用域）
 举一反三，官网也给出了random_index的[Example](http://nginx.org/en/docs/http/ngx_http_random_index_module.html)
 
 
-### nginx事件模型
-略
 
 ### 使用过程中遇到的问题总结
 - nginx -tc nginx.conf 提示找不到nginx命令
@@ -318,6 +244,8 @@ Context: location   //上下文（我理解的是作用域）
 - nginx.conf配置文件中每一行都要用分号“;”结尾，细心一点
 
 ### nginx常用命令
+- nginx  -c  *.conf
+> 启动nginx，指定一个.conf结尾的配置文件
 - kill -HUP pid
 > 从容地重启，服务不会中断。首先会去重新加载配置文件，master会开启新的worker线程进行工作，而老的worker则不再接受命令，直到当前任务处理完，自动退出。
 - 重启nginx，加载新的配置文件平滑启动，服务不中断
@@ -372,8 +300,7 @@ http {
 
 4.运行nginx -s reload 重新加载配置文件，访问localhost:9999顺利的话就可以了
 
-### 参考博客
-
+#### 参考博客
 https://www.cnblogs.com/h9527/p/5530298.html
 
 http://www.cnblogs.com/hanyinglong/p/5141504.html

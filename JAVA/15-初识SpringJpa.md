@@ -1,15 +1,9 @@
-# JPA注解、复杂条件查询
+# 初识Spring JPA
+> 写于2018-05-29
 
-更新于2018-07-22
 
-> 最近SpringBoot+Spring Data Jpa好火的样子，公司一年前就已经开始使用Spring全家桶了，下面记录下自己的一些小心得
-
-## 常用注解
-
-> 下列是一些常用的注解，以及它们功能的简短说明
 ### 表级别注解
 
-常用的表注解有：
 - @Entity   
     > 该注解放在类上，会在数据库创建相应的表，如果不指定表名，会以类名单词间用下划线来命名
 
@@ -21,7 +15,7 @@
 
 ### 字段级别注解
 - @Id
-    > 该注解放在字段上，用来指定表中的主键id
+    > 该注解放在字段上，用来指定表中的主键id，如果要使用jpa就一定要表名主键
 - @GeneratedValue
     > 该注解放在字段主键id上，用来指定id的增长策略
 - @Column
@@ -214,4 +208,4 @@ List<CompetitionTeam>  findTeamsByPage(Competition competition, Pageable pageabl
 @JoinTable(name = "ref_competition_team", joinColumns = { @JoinColumn(name = "ref_competition_id") }, inverseJoinColumns = { @JoinColumn(name = "ref_team_id") })
 private List<CompetitionTeam> competitionTeams;
 ```
-笔记：这条sql是老大教我写的，简直了，大开眼界，还可以这样写，太棒了！对jpa的灵活更加的佩服，全身投地了！
+注：这条sql是老大教我写的，简直了，大开眼界，还可以这样写，太棒了！对jpa的灵活更加的佩服，全身投地了！
