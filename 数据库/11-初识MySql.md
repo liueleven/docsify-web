@@ -1,99 +1,199 @@
-# 初识Git
-> 写于2018-05-02
+# 初识MySql
 
-> 更新2018-09-16
-
-专栏推荐
-> 廖雪峰老师的Git教程：[戳我](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
-
-> GitHub上的优秀中文教程：[戳我](https://github.com/geeeeeeeeek/git-recipes)
-
-### 读完本篇，你能获得啥？
-- git的操作过程
-- 常用的git命令操作
-
-### git的操作过程
-
-git有这4个区域空间的概念，假设我们本地已经有一个git库了，然后我们在【工作区间】进行操作，这时使用命令，git status发现已经有变化了，然后我们要把更改后的文件添加到【缓存区】使用命令git add,再次使用git status命令，这时【工作区间】是干净的。目前为止我们的文件只是添加到了【缓存区】，继续使用命令git commit将缓存区的文件提交到【本地仓库】中，文件提交到这里，相当于你已经完成了一次文件的操作，但仅仅只是在本地可见，其它与你协作的小伙伴是看不见的。最后使用git push命令，将【本地仓库】中的文件推送到【远程仓库】中，这个仓库是大家可见的。
-
-### linux 下安装git
-在centos中为例
-
-1.执行命令：`yum -y install git`
-
-2.配置用户名：`git config --global user.name "liueleven"`
-
-2.配置邮箱：`git config --global user.email "liueleven@aliyun.com"`
-
-4.配置密钥：`ssh-keygen -t rsa -C "liueleven@aliyun.com"` 可以在`/root/.ssh`上查看是否生成
+> 写于：2018-09-18
 
 
-5.将`id_rsa.pub`中的公钥复制到git上即可
-
-### 列举下我常用的高频git命令
-- git reset--head commitid
- 恢复到某一个版本
-- git status
-> 查看当前分支状态
-- git pull origin branch_name
-> 将远程库更新到本地
-- git push origin branch_name
- >  将本地分支推送到远程
-- git log
-> 查看所有提交日志
-- git log -n
-> 查看最近n次的提交记录
-- git log --after="2014-7-1" --before="2014-7-4"
-> 查看这个时间区间内的提交
-- git log --author="John"
-> 查看该作者提交记录
-- git add -A
-> 将所有更改的文件添加到存储区
-- git commit -m"注释说明"
-> 将存储区的提交并写上提交注释
-- git checkout branch_name
-> 切换到某个分支
-- git branch 分支名称
-> 查看当前分支
-- git branch
-> 创建一个新的分支
-- git merge  branch_name
-> 将该分支合并到当前所在的分支
-- git branch -d branch_name
-> 删除一个分支
-- git commit -a -m'注释说明'
-> 相当于git add 和git commit的合体
-- git revert commit号码
-> 撤销一个已经提交了的快照
-
-### 案例：将本地项目托管到GitHub
-先要在GitHub上创建一个repository
+### 基本使用
+- 创建库
+    ```
+    create database dbname
+    ```
+- 删库
+    ```
+    drop database dbname
+    ```
+- 插入数据
+    ```
+    insert into table_name(field1...) values(v1...)
+    ```
+- 删除数据
+    ```
+    update table_name set field1=v1 where id=1
+    ```
+- 删除数据
+    ```
+    delete from table_name where id=1
+    ```
+- left join
 ```
-git init
-git add -A
-git commit -m "first commit"
-git remote add origin 仓库地址
-git push -u origin master
-```
-### 案例：将代码库中的项目添加新功能
-```
-git branch dev      //先创建一个dev分支
-git checkout dev    //切换到dev分支
-git add -A          //在dev分支做了好多功能，全部提交
-git commit -m'      //在dev分支做了好多功' 提交并写上注释
-git push origin     //推到远程仓库
-git checkout margin //切回主分支
-git merge dev       //合并刚才的dev分支
-git push origin     //再把master合并dev后的代码推送到远程端（这里不需要git commit操作，因为是线上合并的，没有在本地操作，你也可以git status查看，会发现是本地是干净的）
+左连接，返回左表所有数据，即使另外一张表没有匹配的数据
 
+create table `person`(
+	`personId` int not null,
+	`firstName` varchar(100) not null,
+	`lastName` varchar(100) not null,
+	primary key (`personId`)
+
+);
+
+create table `address`(
+	`addressId` int not null,
+	`personId` varchar(100) not null,
+	`city` varchar(100) not null,
+	`state` varchar(100) not null,
+	primary key (`addressId`)
+);
+
+select FirstName, LastName, City, State
+from Person left join Address
+on Person.PersonId = Address.PersonId;
+```
+**group by having**
+```
+group by根据什么分组，having相当于是where，不过having可以根据聚合函数来判断，而where不行
+select a.s_id,a.s_name,avg(b.s_score) as avg_score
+from student a join score b on a.s_id = b.s_id
+GROUP BY a.s_id HAVING avg(b.s_score) < 60
 ```
 
-### 案例：将A分支合并到B分支
-> 熟悉常见的几个命令即可
-```
-1.git branch B                         //如果没有B分支就要先创建一个分支，如果有的话就可以直接切换到该分支git checkout B
-2.git merge origin/A                 //将远程A的代码合并到当前分支中（也就是B分支）
+### 主从复制
+**原理**
 
+binlog,mysql会将所有的sql语句存储在这个二进制日志中（这个日志默认是不开启的），然后将和这个日志文件拷贝到另外一个mysql服务器中， 从服务器就会开启一个线程从二进制文件中读取数据，同步到自己的relay log中，将这些sql语句还原，从而实现同步。
+
+![这里缺一张图片](https://raw.githubusercontent.com/liueleven/study/master/%E5%9B%BE%E5%BA%93/14-mysql%E9%9B%86%E7%BE%A4%E3%80%81%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/01-msyql%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E5%8E%9F%E7%90%86.png)
+
+**配置说明**
+
+这里准备2台服务器，一台是192.168.244.134做主机，一台是192.168.244.136做从机
+
+mysql5.7.13(rpm安装)
+
+centos 7
+
+**mysql安装**
+
+参考另一篇笔记
+
+==**先配置主机104**==
+
+**修改134mysql配置开启日志文件**
+
+命令：`vi /etc/my.cnf`
 ```
-### 关于冲突
-> 协同开发经常会遇到冲突，但一般来说看git的提示都可以解决问题（一定要看提示），该删的删掉，该备份的先备份
+添加：
+log-bin=mysql-bin
+server-id=1 #这个server-id    # 是唯一的且只能是数字
+innodb-file-per-table =ON     # 表优化
+```
+
+**登入mysql，查看主机状态**
+
+`mysql -uroot -p`
+
+`show master status;`
+
+记录下主机状态中的最新一条记录的File和Position
+
+![image](https://raw.githubusercontent.com/liueleven/study/master/%E5%9B%BE%E5%BA%93/14-mysql%E9%9B%86%E7%BE%A4%E3%80%81%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/02-%E6%9F%A5%E7%9C%8B%E4%B8%BB%E6%9C%BAbinlog%E5%90%8D%E7%A7%B0.png)
+
+---
+```
+**主机数据备份（可选）**
+
+`mysqldump --master-data=2 --single-transaction --routines --triggers --events -uroot -p test_db > bak_imooc.sql`
+
+如果是生产环境，可以是用这种方式。使用root用户将test_db数据库备份到bak_test.sql中，同时保存触发器，存储过程，事件，开启事物保证数据一致性
+
+**将bak_test.sql拷贝到136服务器上（可选）**
+
+`scp ./bak_test.sql root@ip:/路径`
+
+**在136服务器导入数据库（可选）**
+
+和之前导入操作一样
+```
+---
+
+**在134主机中创建repl用户，让它有权利从这里复制**
+
+`grant replication slave, replication client on *.* to 'repluser1'@'192.168.244.%' identified by 'rootroot';`
+
+可以访问192.168.244网段的服务器
+
+
+**刷新权限**
+
+`flush privileges`
+
+**134主机配置好了，要看下3306端口是否允许外部访问**
+
+==**配置从机**==
+
+**开启relay日志和server-id**
+
+命令：`vi /etc/my.cnf`
+```
+relay-log=relay-log
+relay-log-index=relay-log.index
+server-id=2
+innodb-file-per-table =ON
+```
+
+**重启并登录mysql**
+
+`service mysqld restart`
+
+`mysql -uroot -p`
+
+
+**指定主机节点**
+
+`change master to master_host='192.168.244.134',master_user='root',master_password='rootroot',master_log_file='mysql-bin.000001', MASTER_LOG_POS=154;`
+
+在从机135mysql中指定主机节点，主机ip,用户名，密码和binlog文件
+
+**开启从机**
+
+`start slave;`
+
+**查看从机状态**
+
+`show slave status \G;`
+
+**启动成功**
+
+![启动成功的图](https://raw.githubusercontent.com/liueleven/study/master/%E5%9B%BE%E5%BA%93/14-mysql%E9%9B%86%E7%BE%A4%E3%80%81%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/04-%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F.png)
+
+==**一些问题**==
+
+在测试的时候直接克隆，导致mysql uuid重复没有启动成功，可以在/var/lib/mysql/auto.cnf修改
+
+如果遇到问题直接看mysql日志/var/log//mysqld.log，一般都能解决了
+****
+
+
+
+### sql优化
+[MySql优化总结](数据库/24-MySql优化总结.md)
+
+
+### MySQL常用命令
+1.登录：`mysql -uroot -p`
+
+2.直接执行sql语句：`mysql -uroot -p -e"create database test_db"`
+```
+-e 后面可以写sql，直接操作sql语句不需要进入mysql，例如：
+mysql -uroot -p -e"test_db < test.sql"  # 将test.sql导入数据库
+```
+
+3.远程连接mysql：`mysql -h ip -p 端口 -u 用户名 -p 密码`
+
+4.修改密码 `SET PASSWORD FOR 'root'@'localhost' = PASSWORD('newpass');`
+
+5.允许远程访问
+```
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root' WITH GRANT OPTION;
+
+flush privileges
+```

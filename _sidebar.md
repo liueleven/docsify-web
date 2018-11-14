@@ -1,8 +1,18 @@
-* **数据结构与算法**
-    * [22-数组集合元素随机算法.md](数据结构与算法/22-数组集合元素随机算法.md) 
+* **数据结构与算法与设计模式**
+    * [34-模版方法.md](数据结构与算法与设计模式/34-模版方法.md) 
+    * [33-简单工厂模式.md](数据结构与算法与设计模式/33-简单工厂模式.md) 
+    * [32-初识设计模式.md](数据结构与算法与设计模式/32-初识设计模式.md) 
+    * [31-初识UML.md](数据结构与算法与设计模式/31-初识UML.md) 
+    * [22-数组集合元素随机算法.md](数据结构与算法与设计模式/22-数组集合元素随机算法.md) 
     
     
 * **JAVA**
+    * [35-基于JWT单点登录.md](JAVA/35-基于JWT单点登录.md) 
+    * [30-MyBatis使用总结.md](JAVA/30-MyBatis使用总结.md) 
+    * [29-SpringBoot发送邮件.md](JAVA/29-SpringBoot发送邮件.md) 
+    * [27-分布式锁的一些总结.md](JAVA/27-分布式锁的一些总结.md) 
+    * [26-SpringBoot集成MyBatisGenerator.md](JAVA/26-SpringBoot集成MyBatisGenerator.md) 
+    * [25-初识Swagger.md](JAVA/25-初识Swagger.md) 
     * [18-微信公众号开发总结.md](JAVA/18-微信公众号开发总结.md) 
     * [15-初识SpringJpa.md](JAVA/15-初识SpringJpa.md)
     * [12-初识Git.md](JAVA/12-初识Git.md)
@@ -18,8 +28,10 @@
     
 * **数据库**
     * [11-初识MySql.md](数据库/11-初识MySql.md)
+    * [24-MySql优化总结.md](数据库/24-MySql优化总结.md)
 
 * **服务器与中间件**
+    * [28-Logback常用配置.md](服务器与中间件/28-Logback常用配置.md)
     * [24-Tomcat使用Apr模式.md](服务器与中间件/24-Tomcat使用Apr模式.md)
     * [23-Nginx常用配置（案例）.md](服务器与中间件/23-Nginx常用配置（案例）.md)
     * [21-初识Docker.md](服务器与中间件/21-初识Docker.md)
