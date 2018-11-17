@@ -104,7 +104,9 @@
 ```
 #!/bin/bash
 echo '-------------------------ready operating----------------'
-pid=`ps -ef | grep "mge-backend" | grep -v "grep" | awk '{print $2}'`
+tomcat_pid=`ps -ef|grep tomcat |grep -v grep|awk '{print $2}'`
+# 如果有很多个tomcat可以指定应用的名称,比如：java-backend
+# pid=`ps -ef | grep "java-backend" | grep -v "grep" | awk '{print $2}'`
 echo '----------------------------------------pid='$pid
 kill -9 $pid
 nohup java -jar mge-backend-v1.0.jar >/home/mge-uworks/backend-log.txt &

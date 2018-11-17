@@ -14,7 +14,7 @@
     * [26-SpringBoot集成MyBatisGenerator.md](JAVA/26-SpringBoot集成MyBatisGenerator.md) 
     * [25-初识Swagger.md](JAVA/25-初识Swagger.md) 
     * [18-微信公众号开发总结.md](JAVA/18-微信公众号开发总结.md) 
-    * [15-初识SpringJpa.md](JAVA/15-初识SpringJpa.md)
+    * [15-SpringJpa总结.md](JAVA/15-SpringJpa总结.md)
     * [12-初识Git.md](JAVA/12-初识Git.md)
     * [09-初识JVM（一）.md](JAVA/09-初识JVM（一）.md)
     * [08-JDK命令工具.md](JAVA/08-JDK命令工具.md)

@@ -1,4 +1,4 @@
-# 初识Spring JPA
+# Spring JPA总结
 > 写于2018-05-29
 
 
