@@ -29,6 +29,7 @@
 * **数据库**
     * [11-初识MySql.md](数据库/11-初识MySql.md)
     * [24-MySql优化总结.md](数据库/24-MySql优化总结.md)
+    * [36-大家好，我叫Select.md](数据库/36-大家好，我叫Select.md)
 
 * **服务器与中间件**
     * [28-Logback常用配置.md](服务器与中间件/28-Logback常用配置.md)

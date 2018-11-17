@@ -2,7 +2,7 @@
 
 ### 描述
 
-发送发：163
+发送方：163
 
 接受方：163，阿里云邮箱
 
@@ -19,7 +19,7 @@
 ```
 # 邮箱
 spring.mail.host=smtp.163.com
-# 发送发的邮箱账号
+# 发送方的邮箱账号
 spring.mail.username=liuziqing20180821@163.com
 # 接收方
 # liuziqing2018@163.com

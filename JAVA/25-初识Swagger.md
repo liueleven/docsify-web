@@ -1,4 +1,5 @@
 # SpringBoot Swagger配置
+> 自动生成RESTful风格api文档
 
 ### 导入maven依赖
 ```
@@ -44,6 +45,8 @@ public class SmrdemoApplication {
 	}
 }
 ```
+### 运行
+浏览器输入：http://localhost:8080/swagger-ui.html 就可以看到api页面了
 
 ### 3.注解的使用
 
